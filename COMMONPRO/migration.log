@@ -364,3 +364,13 @@
  * Task [ChangeTypeMappingForRedshift] : Applied successfully
  * Task [AutoUpdateRelationsMigrationTask] : Applied successfully
  ---=== End of migration ===---
+ * Task [Fix a problem of project resources linked to items] : Nothing to do
+ * Task [FixUnevenItemContextParametersMigrationTask] : Nothing to do
+ * Task [AddNewIgnoreNullSettingForTMicrosoftCrmOutputTask] : Applied successfully
+ * Task [ResetJobletComponentNameMigrationTask] : Applied successfully
+ * Task [ResetItemLabelMigrationTask] : Applied successfully
+ * Task [AddApiModeToMarketoComponentsMigrationTask] : Applied successfully
+ * Task [Set FailOn property to true if copy directory else set to false] : Applied successfully
+ * Task [Set the Spark Dataframe Alphabatical sort order in tHiveOutput and tFileOutputParquet] : Applied successfully
+ * Task [AutoUpdateRelationsMigrationTask] : Applied successfully
+ ---=== End of migration ===---
