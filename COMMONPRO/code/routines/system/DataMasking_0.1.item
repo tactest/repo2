@@ -13,22 +13,15 @@
 
 package routines;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
@@ -71,29 +64,32 @@ public class DataMasking {
      * 
      * {example} createMD2("foo") return is d11f8ce29210b4b50c5e67533b699d02
      * 
-     * @throws NoSuchAlgorithmException
      * 
      */
-    public static String createMD2(String message) throws NoSuchAlgorithmException {
+    public static String createMD2(String message) {
         if (message == null) {
             return "Input String for MD2 calculation is missing"; //$NON-NLS-1$
-        } else {
-            /* MD2 Calculation */
-            MessageDigest md2Instance = MessageDigest.getInstance("MD2"); //$NON-NLS-1$
-            md2Instance.reset();
-            md2Instance.update(message.getBytes());
-            byte[] result = md2Instance.digest();
-
-            /* Return */
-            StringBuffer hexString = new StringBuffer();
-            for (byte element : result) {
-                if (element <= 15 && element >= 0) {
-                    hexString.append("0"); //$NON-NLS-1$
-                }
-                hexString.append(Integer.toHexString(0xFF & element));
-            }
-            return hexString.toString();
+        } /* MD2 Calculation */
+        MessageDigest md2Instance = null;
+        try {
+            md2Instance = MessageDigest.getInstance("MD2"); //$NON-NLS-1$
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
+        md2Instance.reset();
+        md2Instance.update(message.getBytes());
+        byte[] result = md2Instance.digest();
+
+        /* Return */
+        StringBuffer hexString = new StringBuffer();
+        for (byte element : result) {
+            if (element <= 15 && element >= 0) {
+                hexString.append("0"); //$NON-NLS-1$
+            }
+            hexString.append(Integer.toHexString(0xFF & element));
+        }
+        return hexString.toString();
+
     }
 
     /**
@@ -108,30 +104,34 @@ public class DataMasking {
      * 
      * {example} createMD5("foo") result is acbd18db4cc2f85cedef654fccc4a4d8
      * 
-     * @throws NoSuchAlgorithmException
-     * 
      */
 
-    public static String createMD5(String message) throws NoSuchAlgorithmException {
+    public static String createMD5(String message) {
         if (message == null) {
             return "Input String for MD5 calculation is missing"; //$NON-NLS-1$
-        } else {
-            /* Calculation */
-            MessageDigest thisMD5 = MessageDigest.getInstance("MD5"); //$NON-NLS-1$
-            thisMD5.reset();
-            thisMD5.update(message.getBytes());
-            byte[] result = thisMD5.digest();
-
-            /* Return */
-            StringBuffer hexString = new StringBuffer();
-            for (byte element : result) {
-                if (element <= 15 && element >= 0) {
-                    hexString.append("0"); //$NON-NLS-1$
-                }
-                hexString.append(Integer.toHexString(0xFF & element));
-            }
-            return hexString.toString();
         }
+
+        /* Calculation */
+        MessageDigest thisMD5 = null;
+        try {
+            thisMD5 = MessageDigest.getInstance("MD5"); //$NON-NLS-1$
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        thisMD5.reset();
+        thisMD5.update(message.getBytes());
+        byte[] result = thisMD5.digest();
+
+        /* Return */
+        StringBuffer hexString = new StringBuffer();
+        for (byte element : result) {
+            if (element <= 15 && element >= 0) {
+                hexString.append("0"); //$NON-NLS-1$
+            }
+            hexString.append(Integer.toHexString(0xFF & element));
+        }
+        return hexString.toString();
+
     }
 
     /**
@@ -244,22 +244,17 @@ public class DataMasking {
      * 
      * {example} encryptAES("foo") result is UQ0VJZq5ymFkMYQeDrPi0A==
      * 
-     * @throws NoSuchPaddingException
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeyException
-     * @throws BadPaddingException
-     * @throws IllegalBlockSizeException
-     * 
      */
 
-    public static String encryptAES(String encryptString, byte[] keyValue) throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public static String encryptAES(String encryptString, byte[] keyValue) {
+
         if (encryptString == null || keyValue == null) {
             return NULL_PARAMETER_MESSAGE;
         }
         if (encryptString.length() == 0) {
             return EMPTY_PARAMETER_MESSAGE;
-        } else {
+        }
+        try {
             Key key = new SecretKeySpec(keyValue, ALGO);
             Cipher cipher = Cipher.getInstance(ALGO);
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -267,6 +262,8 @@ public class DataMasking {
             String encryptedValue = b64Encoder.encode(encVal);
             return encryptedValue;
 
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -285,25 +282,18 @@ public class DataMasking {
      * 
      * {example} decryptAES("UQ0VJZq5ymFkMYQeDrPi0A==") result is "foo"
      * 
-     * @throws NoSuchPaddingException
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeyException
-     * @throws IOException
-     * @throws BadPaddingException
-     * @throws IllegalBlockSizeException
-     * 
      */
 
-    public static String decryptAES(String encryptedString, byte[] keyValue) throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException {
-
+    public static String decryptAES(String encryptedString, byte[] keyValue) {
+        
         if (encryptedString == null || keyValue == null) {
             return NULL_PARAMETER_MESSAGE;
         }
 
         if (encryptedString.length() == 0) {
             return EMPTY_PARAMETER_MESSAGE;
-        } else {
+        }
+        try {
             Key key = new SecretKeySpec(keyValue, ALGO);
             Cipher cipher = Cipher.getInstance(ALGO);
             cipher.init(Cipher.DECRYPT_MODE, key);
@@ -312,6 +302,9 @@ public class DataMasking {
             String decryptedValue = new String(decValue);
             return decryptedValue;
 
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -329,43 +322,38 @@ public class DataMasking {
      * 
      * {example} encryptDES("foo") result is DmNj+x2LUXA=
      * 
-     * @throws UnsupportedEncodingException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeyException
-     * @throws InvalidKeySpecException
-     * @throws BadPaddingException
-     * @throws IllegalBlockSizeException
-     * 
      * @throws Exception
      */
 
-    public static String encryptDES(String unencryptedString, String myEncryptionKey) throws UnsupportedEncodingException,
-            NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException,
-            IllegalBlockSizeException, BadPaddingException {
-        if (unencryptedString == null || myEncryptionKey == null) {
-            return NULL_PARAMETER_MESSAGE;
+    public static String encryptDES(String unencryptedString, String myEncryptionKey) {
+       
+            if (unencryptedString == null || myEncryptionKey == null) {
+                return NULL_PARAMETER_MESSAGE;
+            }
+            if (unencryptedString.length() == 0) {
+                return EMPTY_PARAMETER_MESSAGE;
+            } 
+            try {
+                String encryptedString = null;
+
+                String myEncryptionScheme = DES_ENCRYPTION_SCHEME;
+                byte[] keyAsBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
+                KeySpec myKeySpec = new DESKeySpec(keyAsBytes);
+                SecretKeyFactory mySecretKeyFactory = SecretKeyFactory.getInstance(myEncryptionScheme);
+                Cipher encipher = Cipher.getInstance(myEncryptionScheme);
+                SecretKey key = mySecretKeyFactory.generateSecret(myKeySpec);
+
+                encipher.init(Cipher.ENCRYPT_MODE, key);
+                byte[] plainText = unencryptedString.getBytes(UNICODE_FORMAT);
+                byte[] encryptedText = encipher.doFinal(plainText);
+                encryptedString = b64Encoder.encode(encryptedText);
+
+                return encryptedString;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        if (unencryptedString.length() == 0) {
-            return EMPTY_PARAMETER_MESSAGE;
-        } else {
-            String encryptedString = null;
 
-            String myEncryptionScheme = DES_ENCRYPTION_SCHEME;
-            byte[] keyAsBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
-            KeySpec myKeySpec = new DESKeySpec(keyAsBytes);
-            SecretKeyFactory mySecretKeyFactory = SecretKeyFactory.getInstance(myEncryptionScheme);
-            Cipher encipher = Cipher.getInstance(myEncryptionScheme);
-            SecretKey key = mySecretKeyFactory.generateSecret(myKeySpec);
-
-            encipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] plainText = unencryptedString.getBytes(UNICODE_FORMAT);
-            byte[] encryptedText = encipher.doFinal(plainText);
-            encryptedString = b64Encoder.encode(encryptedText);
-
-            return encryptedString;
-
-        }
     }
 
     /**
@@ -382,19 +370,9 @@ public class DataMasking {
      * 
      * {example} decryptDES("DmNj+x2LUXA=") result is "foo"
      * 
-     * @throws InvalidKeyException
-     * @throws NoSuchPaddingException
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws IOException
-     * @throws BadPaddingException
-     * @throws IllegalBlockSizeException
-     * 
      */
 
-    public static String decryptDES(String encryptedString, String myDecryptionKey) throws InvalidKeyException,
-            NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException, IOException, IllegalBlockSizeException,
-            BadPaddingException {
+    public static String decryptDES(String encryptedString, String myDecryptionKey) {
 
         if (encryptedString == null || myDecryptionKey == null) {
             return NULL_PARAMETER_MESSAGE;
@@ -402,7 +380,8 @@ public class DataMasking {
 
         if (encryptedString.length() == 0) {
             return EMPTY_PARAMETER_MESSAGE;
-        } else {
+        }
+        try {
             String decryptedText = null;
 
             String myDecryptionScheme = DES_ENCRYPTION_SCHEME;
@@ -425,6 +404,8 @@ public class DataMasking {
             decryptedText = stringBuffer.toString();
             return decryptedText;
 
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
 
     }
