@@ -374,3 +374,5 @@
  * Task [Set the Spark Dataframe Alphabatical sort order in tHiveOutput and tFileOutputParquet] : Applied successfully
  * Task [AutoUpdateRelationsMigrationTask] : Applied successfully
  ---=== End of migration ===---
+ ---=== Start Migration of project commonpro ===---
+ * Task [AddJavaVersionMigrationTask] : Applied successfully

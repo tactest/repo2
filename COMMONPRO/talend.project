@@ -1249,7 +1249,6 @@
     <migrationTask xmi:id="_yHk4QJFTEee0rNfd0WaYSQ" id="org.talend.repository.model.migration.ChangeMSSQLDBVersionMigrationTask" breaks="6.2.0" version="6.3.0" status="noimpact"/>
     <migrationTask xmi:id="_yHk4QZFTEee0rNfd0WaYSQ" id="org.talend.datacleansing.core.migration.UpdateTMatchGroupOutPutSchemaTask" breaks="6.3.1" version="6.3.1" status="ok"/>
     <migrationTask xmi:id="_yHk4QpFTEee0rNfd0WaYSQ" id="org.talend.repository.model.migration.ChangeTypeMappingForRedshift" breaks="6.3.0" version="6.3.1" status="ok"/>
-    <migrationTask xmi:id="_yHk4MJFTEee0rNfd0WaYSQ" id="org.talend.repository.model.migration.FixProjectResourceLink" breaks="5.1.1" version="5.1.2" status="ok"/>
     <migrationTask xmi:id="_DBi_YJHrEeepFLBGpc8rhQ" id="org.talend.repository.model.migration.FixUnevenItemContextParametersMigrationTask" breaks="6.1.0" version="6.3.2" status="noimpact"/>
     <migrationTask xmi:id="_DBi_YZHrEeepFLBGpc8rhQ" id="org.talend.repository.model.migration.AddNewIgnoreNullSettingForTMicrosoftCrmOutputTask" breaks="6.2.1" version="6.2.2" status="ok"/>
     <migrationTask xmi:id="_DBi_YpHrEeepFLBGpc8rhQ" id="org.talend.designer.joblet.repository.migration.ResetJobletComponentNameMigrationTask" breaks="6.3.0" version="6.3.1" status="ok"/>
@@ -1258,6 +1257,7 @@
     <migrationTask xmi:id="_DBi_ZZHrEeepFLBGpc8rhQ" id="org.talend.repository.model.migration.AddFailOnErrorOnTFileCopyTDI38441" breaks="6.2.2" version="6.3.1" status="ok"/>
     <migrationTask xmi:id="_DBi_ZpHrEeepFLBGpc8rhQ" id="org.talend.repository.model.migration.SetSparkDataframeAlphabeticalSortOrder" breaks="6.1.0" version="6.1.0" status="ok"/>
     <migrationTask xmi:id="_yHk4Q5FTEee0rNfd0WaYSQ" id="org.talend.repository.model.migration.AutoUpdateRelationsMigrationTask" breaks="5.1.1" version="5.1.2" status="ok"/>
+    <migrationTask xmi:id="_tCZ6MJxAEeeUotXq_xMAVg" id="org.talend.repository.model.migration.AddJavaVersionMigrationTask" breaks="6.3.1" version="6.4.0" status="ok"/>
   </TalendProperties:Project>
   <TalendProperties:User xmi:id="_zi5aYnMkEea2QtDRiJ4O5A" login="admin@company.com" firstName="admin" lastName="admin" type="MDM" additionnalData="{}"/>
   <TalendProperties:User xmi:id="_3721kJK0EeepXvLZeEU_MA" login="Trigger-Runner" type="MDM"/>
